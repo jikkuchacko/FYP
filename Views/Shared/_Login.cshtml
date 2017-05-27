@@ -1,0 +1,40 @@
+﻿@model Login
+@{
+    Layout = ViewData["layout"] as string;
+    string msg = ViewData["msg"] as string;
+
+}
+
+
+<form class="form-horizontal" asp-controller="Account" asp-action="Authenticate">
+    @if (msg != null)
+    {
+        <div class="form-group">
+            <div class="col-sm-5">
+                <div class="alert alert-danger">
+                    <strong>@msg</strong>
+                </div>
+            </div>
+        </div>
+    }
+    <h2 class="form-signin-heading">Please Sign In</h2>
+    <div class="col-sm-5">
+        <div class="form-group">
+            <label asp-for="UserId" class="control-label">User ID :</label>
+            <input asp-for="UserId" class="form-control" placeholder="User ID" />
+            <div class="has-error">
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label">Password :</label>
+            <input asp-for="Password" class="form-control" placeholder="Password" />
+            <div class="has-error">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In" />
+        </div>
+    </div>
+</form>
