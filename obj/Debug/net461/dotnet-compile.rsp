@@ -167,5 +167,13 @@
 --reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Numerics.dll
 --reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Runtime.Serialization.dll
 --resource:"D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\obj\Debug\net461\FYPdotnet-compile.deps.json",FYP.deps.json
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\DBUtl.cs
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Program.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\SessionUtl.cs
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Startup.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\WebUtl.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Controllers\AccountController.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Controllers\HomeController.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\AlLecturer.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\AppDbContext.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\Login.cs

@@ -13,23 +13,23 @@ namespace FYP.Controllers
     {
         private Login curUser()
         {
-            Login cUser = HttpContext.Session.GetObject<Login>("phuser");
+            Login cUser = HttpContext.Session.GetObject<Login>("Al_Lecturer");
             return cUser;
         }
         [HttpGet]
         public IActionResult Authenticate()
         {
-            // Login.cshtml is a shared form, therefore the Layout used should be changed programmatically
+            
             ViewData["layout"] = "_Layout";
 
-            return View("Login");
+            return View("_Login");
         }
         [HttpPost]
         public IActionResult Authenticate(Login login)
         {
             if (curUser() == null)
             {
-                string sql = @"SELECT * FROM Al_lecturer WHERE Name = '{0}' AND Password = HASHBYTES('SHA1', '{1}')";
+                string sql = @"SELECT * FROM Al_Lecturer WHERE Name = '{0}' AND Password = HASHBYTES('SHA1', '{1}')";
                 var result = DBUtl.GetList(sql, login.UserId, login.Password);
                 if (result.Count > 0)
                 {
@@ -38,11 +38,12 @@ namespace FYP.Controllers
                     login.Password = null;
                     login.Id = user.Id;
                     HttpContext.Session.SetObject("Al_lecturer", login);
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
+                    return View("Index");
                 }
                 ViewData["layout"] = "_Layout";
                 ViewData["msg"] = "Login failed";
-                return View("Login");
+                return View("Index");
             }
             else
                 return RedirectToAction("Index");
