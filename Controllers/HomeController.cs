@@ -15,9 +15,5 @@ namespace FYP.Controllers
         {
             return View();
         }
-        public IActionResult add()
-        {
-            return View();
-        }
     }
 }
