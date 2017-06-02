@@ -39,9 +39,16 @@
     <div class="row">
         <div class="col-sm-2">
 
-            @if (curUser != null)
+            @if (curUser != null && curUser.type == 0)
             {
                 <img src="~/images/Al.png" style="width:90%;height:90%" />
+            }
+            else if (curUser != null && curUser.type == 1)
+            {
+                <img src="~/images/ORG.png" style="width:90%;height:90%" />
+            }
+                @if (curUser != null)
+                { 
                 <h4 class="text-center text-primary">
                     Welcome @curUser.Name
                 </h4>
@@ -59,8 +66,9 @@
 
                             @if (curUser != null && curUser.type == 0)
                             {
+                               
                                 <li class="active">
-                                    <a asp-action="Index">Home</a>
+                                    <a asp-action="home">Home</a>
                                 </li>
                                 <li class="active">
                                     <a asp-action="IndicateAvailability">Indicate Availability</a>
@@ -78,19 +86,22 @@
                             else if (curUser != null && curUser.type == 1)
                             {
                                 <li class="active">
-                                    <a asp-action="Index">Home</a>
+                                    <a asp-action="home">Home</a>
                                 </li>
                                 <li class="active">
-                                    <a asp-action="InvTimeslot">Setup Inv Timeslot</a>
+                                    <a asp-action="InvTimeslot"> Setup Invigilation Timeslot</a>
                                 </li>
                                 <li class="active">
-                                    <a asp-action="IndicationStatus">Reminder Email</a>
+                                    <a asp-action="SendTimeslot">Send Available Timeslot</a>
                                 </li>
                                 <li class="active">
-                                    <a asp-action="ViewAllocation">Send email offer</a>
+                                    <a asp-action="InvTimeslot">View Ind.status of AL</a>
                                 </li>
                                 <li class="active">
-                                    <a asp-action="MaintainDetails">Generate excel sheet</a>
+                                    <a asp-action="SendEmail">Send Confirmation Email </a>
+                                </li>
+                                <li class="active">
+                                    <a asp-action="GenerateExcel">Generate Excel Sheet</a>
                                 </li>
                             }
                         </ul>

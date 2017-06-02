@@ -1,0 +1,25 @@
+﻿@model Login
+@{
+    Login curUser = Context.Session.GetObject<Login>("Al_lecturer");
+    Layout = ViewData["layout"] as string;
+    string msg = ViewData["msg"] as string;
+    Layout = "_Layout";
+
+
+}
+
+<p> <h1>Welcome!</h1></p>
+@if (curUser != null && curUser.type== 0)            
+    {
+        
+       <p> <h2>AI lecture : @curUser.Name </h2></p> 
+}
+else if (curUser != null && curUser.type == 1)
+{
+        <p> <h2> Admin : @curUser.Name </h2></p>
+
+    }
+else if (curUser == null)
+{ 
+ <p> not logged in</p>
+}

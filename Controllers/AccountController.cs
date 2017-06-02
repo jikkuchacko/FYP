@@ -59,13 +59,17 @@ namespace FYP.Controllers
         {
             return View();
         }
+        public IActionResult home()
+        {
+            return View("home");
+        }
 
-       // public IActionResult InvTimeslot()
-        //{
-          //  List<PHBooking> model = DBUtl.GetList<PHBooking>("SELECT * FROM PHBooking WHERE BookedBy = {0}", curUser().Id);
-          //  return View(model);
-           // return View("InvTimeSlot");
-        //}
+         public IActionResult InvTimeslot()
+        {
+        //List<Timeslot> model = DBUtl.GetList<Timeslot>("SELECT * FROM Timeslot WHERE BookedBy = {0}", curUser().Id);
+        //  return View(model);
+         return View("InvTimeSlot");
+        }
 
     }
 }
