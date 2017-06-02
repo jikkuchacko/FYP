@@ -17,6 +17,7 @@ namespace FYP.Models
 
       public int Id { get; set; }
       public string Name { get; set; }
+      public int type { get; set; }
 
    }
 }

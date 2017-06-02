@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     Login curUser = Context.Session.GetObject<Login>("Al_lecturer");
 }
 
@@ -38,7 +38,7 @@
 <body>
     <div class="row">
         <div class="col-sm-2">
-            
+
             @if (curUser != null)
             {
                 <img src="~/images/Al.png" style="width:90%;height:90%" />
@@ -56,11 +56,12 @@
                     <div>
 
                         <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a asp-action="Index">Home</a>
-                            </li>                          
-                            @if (curUser != null)
-                            {                       
+
+                            @if (curUser != null && curUser.type == 0)
+                            {
+                                <li class="active">
+                                    <a asp-action="Index">Home</a>
+                                </li>
                                 <li class="active">
                                     <a asp-action="IndicateAvailability">Indicate Availability</a>
                                 </li>
@@ -72,6 +73,24 @@
                                 </li>
                                 <li class="active">
                                     <a asp-action="MaintainDetails">Maintain Details</a>
+                                </li>
+                            }
+                            else if (curUser != null && curUser.type == 1)
+                            {
+                                <li class="active">
+                                    <a asp-action="Index">Home</a>
+                                </li>
+                                <li class="active">
+                                    <a asp-action="InvTimeslot">Setup Inv Timeslot</a>
+                                </li>
+                                <li class="active">
+                                    <a asp-action="IndicationStatus">Reminder Email</a>
+                                </li>
+                                <li class="active">
+                                    <a asp-action="ViewAllocation">Send email offer</a>
+                                </li>
+                                <li class="active">
+                                    <a asp-action="MaintainDetails">Generate excel sheet</a>
                                 </li>
                             }
                         </ul>
