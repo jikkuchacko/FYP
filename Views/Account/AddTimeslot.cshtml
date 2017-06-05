@@ -1,0 +1,72 @@
+﻿@model Login
+@{
+    Layout = ViewData["layout"] as string;
+    string msg = ViewData["msg"] as string;
+    Layout = "_Layout";
+
+}
+<form class="form-horizontal" asp-action="AddTimeslot">
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="NRIC">NRIC : </label>
+        <div class="col-sm-5">
+            <input asp-for="NRIC" class="form-control" />
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="NRIC" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="OwnerName">Owner Name : </label>
+        <div class="col-sm-5">
+            <input asp-for="OwnerName" class="form-control" />
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="OwnerName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="PetName">Owner Pet Name : </label>
+        <div class="col-sm-5">
+            <input asp-for="PetName" class="form-control" />
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="PetName" class="text-danger"></span>
+        </div>
+    </div>
+        <div class="has-error">
+            <span asp-validation-for="PetTypeId" class="text-danger"></span>
+        </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="CheckInDate">Check-In Date: </label>
+        <div class="col-sm-3">
+            <div class='input-group date' id='BsDateTimePicker'>
+                <input class="form-control" asp-for="CheckInDate" placeholder="YYYY-MM-DD" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <<div class="form-group">
+        <label class="control-label col-sm-3" asp-for="Days">Number of Days (1-30) : </label>
+        <div class="col-sm-5">
+            <input asp-for="Days" class="form-control" />
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="Days" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <input type="submit" class="btn btn-primary" value="Submit" />
+        </div>
+    </div>
+</form>

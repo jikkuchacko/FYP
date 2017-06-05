@@ -3,16 +3,34 @@
     Layout = ViewData["layout"] as string;
     string msg = ViewData["msg"] as string;
     Layout = "_Layout";
+    var Timeslots = ViewData["timeslots"] as List<dynamic>;
 
 }
-<p><h3>Invigilation Timeslot</h3></p>
-<table class="table table-bordered">
-    <thead>
+
+<p><h3><b>Setup Invigilation Timeslot</b></h3></p>
+
+    <table class="table table-bordered">
+        <thead>
         <th>Module Code</th>
         <th>School/centre of Module</th>
         <th>Date</th>
         <th>Start Time</th>
         <th>End Time</th>
         <th>MSA Venue</th>
-    </thead>
-</table>
+        </thead>
+        <tbody>
+            
+            @foreach (var item in Timeslots)
+            {
+                
+                <tr>
+                    <td>@item.module_code</td>
+                    <td>@item.module_school</td>
+                    <td>@item.date</td>
+                    <td>@item.start_time</td>
+                    <td>@item.end_time</td>
+                    <td>@item.msa_venue</td>
+                </tr>
+            }
+        </tbody>
+    </table>

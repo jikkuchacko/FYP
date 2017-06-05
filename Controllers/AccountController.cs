@@ -66,10 +66,53 @@ namespace FYP.Controllers
 
          public IActionResult InvTimeslot()
         {
-        //List<Timeslot> model = DBUtl.GetList<Timeslot>("SELECT * FROM Timeslot WHERE BookedBy = {0}", curUser().Id);
-        //  return View(model);
-         return View("InvTimeSlot");
+            ViewData["timeslots"] = DBUtl.GetList(@"SELECT * FROM Timeslot");
+            return View("InvTimeSlot");
         }
 
+        public IActionResult SendTimeslot()
+        {
+            return View("SendTimeslot");
+        }
+
+        public IActionResult ViewStatus()
+        {
+            return View("ViewStatus");
+        }
+
+        public IActionResult SendEmail()
+        {
+            return View("SendEmail");
+        }
+
+        public IActionResult GenerateExcel()
+        {
+            return View("GenerateExcel");
+        }
+        //-----------------------------------------------AL_LECTURERS-------------------------------------------------
+        public IActionResult IndicateAvailability()
+        {
+            return View("IndicateAvailability");
+        }
+
+        public IActionResult IndicationStatus()
+        {
+            return View("IndicationStatus");
+        }
+
+        public IActionResult ViewAllocation()
+        {
+            return View("ViewAllocation");
+        }
+
+        public IActionResult MaintainDetails()
+        {
+            return View("MaintainDetails");
+        }
+
+
+
+
     }
+
 }
