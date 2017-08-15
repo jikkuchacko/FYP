@@ -174,12 +174,6 @@ D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Startup.
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\WebUtl.cs
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Controllers\AccountController.cs
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Controllers\HomeController.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\AlLecturer.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\AppDbContext.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\ExamVenue.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\Availablity.cs
 D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\Login.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\Module.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\OrgCoordinator.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\SaCoordinator.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\School.cs
-D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\Timeslot.cs
+D:\Study materials(sem 4)\Advanced Web Application .Net\C286\Mycode\FYP\Models\SendEmail.cs

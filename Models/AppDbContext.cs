@@ -6,8 +6,9 @@ namespace FYP.Models
 {
     public partial class AppDbContext : DbContext
     {
-        public virtual DbSet<AlLecturer> AlLecturer { get; set; }
+        public virtual DbSet<AssociateLecturer> AssociateLecturer { get; set; }
         public virtual DbSet<ExamVenue> ExamVenue { get; set; }
+        public virtual DbSet<LectSlot> LectSlot { get; set; }
         public virtual DbSet<Module> Module { get; set; }
         public virtual DbSet<OrgCoordinator> OrgCoordinator { get; set; }
         public virtual DbSet<SaCoordinator> SaCoordinator { get; set; }
@@ -16,84 +17,146 @@ namespace FYP.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=FYP;Integrated Security=True");
+             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=FYP;Integrated Security=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AlLecturer>(entity =>
+            modelBuilder.Entity<AssociateLecturer>(entity =>
             {
-                entity.ToTable("Al_lecturer");
+                entity.HasKey(e => e.AlId)
+                    .HasName("PK__associat__84248F8340011A4D");
 
-                entity.HasIndex(e => e.Email)
-                    .HasName("AK_Al_lecturer_Email")
-                    .IsUnique();
+                entity.ToTable("associate_lecturer");
 
-                entity.Property(e => e.Email)
+                entity.Property(e => e.AlId).HasColumnName("al_id");
+
+                entity.Property(e => e.AlContactNumber)
                     .IsRequired()
-                    .HasColumnType("varchar(20)");
+                    .HasColumnName("al_contact_number")
+                    .HasColumnType("varchar(10)");
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.AlEmail)
                     .IsRequired()
-                    .HasColumnType("varchar(50)");
+                    .HasColumnName("al_email")
+                    .HasColumnType("varchar(45)");
 
-                entity.Property(e => e.Password)
+                entity.Property(e => e.AlName)
                     .IsRequired()
-                    .HasMaxLength(50);
+                    .HasColumnName("al_name")
+                    .HasColumnType("varchar(45)");
 
-                entity.Property(e => e.School)
+                entity.Property(e => e.AlSchool)
                     .IsRequired()
-                    .HasColumnType("varchar(20)");
+                    .HasColumnName("al_school")
+                    .HasColumnType("varchar(45)");
 
-                entity.Property(e => e.Type)
-                    .HasColumnName("type")
-                    .HasDefaultValueSql("0");
+
+                entity.Property(e => e.SchoolSchoolId).HasColumnName("school_school_id");
+
+                entity.HasOne(d => d.SchoolSchool)
+                    .WithMany(p => p.AssociateLecturer)
+                    .HasForeignKey(d => d.SchoolSchoolId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__associate__schoo__31EC6D26");
             });
 
             modelBuilder.Entity<ExamVenue>(entity =>
             {
-                entity.HasKey(e => e.ClassName)
-                    .HasName("PK__exam_ven__7DC4C39C3B8981D2");
+                entity.HasKey(e => e.ClassId)
+                    .HasName("PK__exam_ven__FDF479868DFD9F0D");
 
                 entity.ToTable("exam_venue");
 
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
+
+                entity.Property(e => e.ClassLevel)
+                    .HasColumnName("class_level")
+                    .HasColumnType("varchar(45)");
+
                 entity.Property(e => e.ClassName)
+                    .IsRequired()
                     .HasColumnName("class_name")
                     .HasColumnType("varchar(4)");
 
-                entity.Property(e => e.ClassLevel)
+                entity.Property(e => e.TimeslotAlLecturerAlId).HasColumnName("Timeslot_al_lecturer_al_id");
+
+                entity.Property(e => e.TimeslotModuleCode)
                     .IsRequired()
-                    .HasColumnName("class_level")
-                    .HasColumnType("varchar(45)");
+                    .HasColumnName("Timeslot_module_code")
+                    .HasColumnType("varchar(4)");
+
+                entity.Property(e => e.TimeslotTimeslotId).HasColumnName("Timeslot_timeslot_id");
+
+                //entity.HasOne(d => d.TimeslotTimeslot)
+                //    .WithMany(p => p.ExamVenue)
+                //    .HasForeignKey(d => d.TimeslotTimeslotId)
+                //    .OnDelete(DeleteBehavior.Restrict)
+                //    .HasConstraintName("FK__exam_venu__Times__32E0915F");
+            });
+
+            modelBuilder.Entity<LectSlot>(entity =>
+            {
+                entity.HasKey(e => e.PreferredTimeslotId)
+                    .HasName("PK__lect_slo__4169FEBAD048C27A");
+
+                entity.ToTable("lect_slot");
+
+                entity.Property(e => e.PreferredTimeslotId).HasColumnName("preferred_timeslot_id");
+
+                entity.Property(e => e.AssociateLecturerAlId).HasColumnName("associate_lecturer_al_id");
+
+                entity.Property(e => e.RequestTime)
+                    .HasColumnName("request_time")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.TimeslotTimeslot).HasColumnName("Timeslot_timeslot");
+
+                entity.HasOne(d => d.AssociateLecturerAl)
+                    .WithMany(p => p.LectSlot)
+                    .HasForeignKey(d => d.AssociateLecturerAlId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__lect_slot__assoc__37A5467C");
+
+                //entity.HasOne(d => d.TimeslotTimeslotNavigation)
+                //    .WithMany(p => p.LectSlot)
+                //    .HasForeignKey(d => d.TimeslotTimeslot)
+                //    .OnDelete(DeleteBehavior.Restrict)
+                //    .HasConstraintName("FK__lect_slot__Times__38996AB5");
             });
 
             modelBuilder.Entity<Module>(entity =>
             {
-                entity.HasKey(e => e.ModuleCode)
-                    .HasName("PK__tmp_ms_x__E5DB09FBE8A551DF");
+                entity.ToTable("module");
+
+                entity.Property(e => e.ModuleId).HasColumnName("module_id");
 
                 entity.Property(e => e.ModuleCode)
                     .HasColumnName("module_code")
                     .HasColumnType("varchar(4)");
 
                 entity.Property(e => e.ModuleName)
+                    .IsRequired()
                     .HasColumnName("module_name")
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.NumberOfStaff).HasColumnName("number_of_staff");
 
-                entity.Property(e => e.NumberOfStrudents).HasColumnName("number_of_strudents");
+                entity.Property(e => e.NumberOfStudents).HasColumnName("number_of_students");
 
-                entity.Property(e => e.SchoolId)
-                    .HasColumnName("school_id")
-                    .HasColumnType("varchar(50)");
+                entity.Property(e => e.SchoolSchoolId).HasColumnName("school_school_id");
+
+                entity.HasOne(d => d.SchoolSchool)
+                    .WithMany(p => p.Module)
+                    .HasForeignKey(d => d.SchoolSchoolId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__module__school_s__30F848ED");
             });
 
             modelBuilder.Entity<OrgCoordinator>(entity =>
             {
                 entity.HasKey(e => e.OrgId)
-                    .HasName("PK__ORG_coor__666E16845F48DCA3");
+                    .HasName("PK__ORG_coor__666E16845E91E730");
 
                 entity.ToTable("ORG_coordinator");
 
@@ -101,56 +164,69 @@ namespace FYP.Models
                     .HasColumnName("ORG_id")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.OrgContactNo)
-                    .IsRequired()
-                    .HasColumnName("ORG_contact_no")
-                    .HasColumnType("varchar(10)");
+                entity.Property(e => e.OrgContactNumber)
+                    .HasColumnName("ORG_contact_number")
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.OrgEmail)
-                    .IsRequired()
                     .HasColumnName("ORG_email")
                     .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.OrgName)
-                    .IsRequired()
                     .HasColumnName("ORG_name")
                     .HasColumnType("varchar(45)");
+
+                entity.Property(e => e.SchoolSchoolId).HasColumnName("school_school_id");
+
+                entity.HasOne(d => d.SchoolSchool)
+                    .WithMany(p => p.OrgCoordinator)
+                    .HasForeignKey(d => d.SchoolSchoolId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__ORG_coord__schoo__36B12243");
             });
 
             modelBuilder.Entity<SaCoordinator>(entity =>
             {
                 entity.HasKey(e => e.SaId)
-                    .HasName("PK__SA_coord__6939A750B3ECE01B");
+                    .HasName("PK__SA_Coord__6939A750FAC9292E");
 
-                entity.ToTable("SA_coordinator");
+                entity.ToTable("SA_Coordinator");
 
                 entity.Property(e => e.SaId)
                     .HasColumnName("SA_id")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.SaContactNo)
-                    .IsRequired()
-                    .HasColumnName("SA_contact_no")
-                    .HasColumnType("varchar(10)");
+                entity.Property(e => e.SaContactNumber)
+                    .HasColumnName("SA_contact_number")
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.SaEmail)
-                    .IsRequired()
                     .HasColumnName("SA_email")
                     .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.SaName)
-                    .IsRequired()
                     .HasColumnName("SA_name")
                     .HasColumnType("varchar(45)");
+
+                entity.Property(e => e.SchoolSchoolId).HasColumnName("school_school_id");
+
+                entity.HasOne(d => d.SchoolSchool)
+                    .WithMany(p => p.SaCoordinator)
+                    .HasForeignKey(d => d.SchoolSchoolId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK__SA_Coordi__schoo__35BCFE0A");
             });
 
             modelBuilder.Entity<School>(entity =>
             {
                 entity.ToTable("school");
 
-                entity.Property(e => e.SchoolId)
-                    .HasColumnName("school_id")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.SchoolId).HasColumnName("school_id");
+
+                entity.Property(e => e.SchoolDepartment)
+                    .IsRequired()
+                    .HasColumnName("school_department")
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.SchoolName)
                     .IsRequired()
@@ -160,34 +236,42 @@ namespace FYP.Models
 
             modelBuilder.Entity<Timeslot>(entity =>
             {
-                entity.HasKey(e => e.ModuleCode)
-                    .HasName("PK__tmp_ms_x__E5DB09FB5763FC07");
+                entity.Property(e => e.timeslot_id).HasColumnName("timeslot_id");
 
-                entity.Property(e => e.ModuleCode)
-                    .HasColumnName("module_code")
+                entity.Property(e => e.associate_lecturer_al_id).HasColumnName("associate_lecturer_al_id");
+
+                entity.Property(e => e.duration_of_exam).HasColumnName("duration_of_exam");
+
+                entity.Property(e => e.examDate)
+                    .HasColumnName("examDate")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.moduleModuleCode)
+                    .IsRequired()
+                    .HasColumnName("module_module_code")
                     .HasColumnType("varchar(4)");
 
-                entity.Property(e => e.AlId).HasColumnName("al_id ");
+                entity.Property(e => e.module_module_id).HasColumnName("module_module_id");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.EndTime)
-                    .HasColumnName("end_time")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.ModuleSchool)
-                    .HasColumnName("module_school")
+                entity.Property(e => e.module_schoolcentre)
+                    .IsRequired()
+                    .HasColumnName("module_schoolcentre")
                     .HasColumnType("varchar(45)");
 
-                entity.Property(e => e.MsaVenue)
-                    .HasColumnName("msa_venue")
-                    .HasColumnType("varchar(4)");
-
-                entity.Property(e => e.StartTime)
+                entity.Property(e => e.start_time)
                     .HasColumnName("start_time")
-                    .HasColumnType("datetime");
+                    .HasColumnType("date");
+
+                //entity.HasOne(d => d.AssociateLecturerAl)
+                //    .WithMany(p => p.Timeslot)
+                //    .HasForeignKey(d => d.AssociateLecturerAlId)
+                //    .HasConstraintName("FK__Timeslot__associ__33D4B598");
+
+                //entity.HasOne(d => d.ModuleModule)
+                //    .WithMany(p => p.Timeslot)
+                //    .HasForeignKey(d => d.ModuleModuleId)
+                //    .OnDelete(DeleteBehavior.Restrict)
+                //    .HasConstraintName("FK__Timeslot__module__34C8D9D1");
             });
         }
     }

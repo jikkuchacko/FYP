@@ -1,0 +1,36 @@
+﻿@model List<dynamic>
+@{
+    Layout = ViewData["layout"] as string;
+    string msg = TempData["msg"] as string;
+    Layout = "_Layout";
+}
+
+
+<p><h2><b>Auto Allocation Successful...!!!</b></h2></p>
+
+@{
+    if (msg != null)
+    {
+        <p>@msg</p>
+
+    }
+}
+<div class="container">
+    <div class="col-sm-8">
+        <div class="row">
+            <table id="allotTable" class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Timeslot</th>                      
+                        <th>Lecturer name</th>
+                        <th>Alloacted venue(s)</th>
+                        <th>Submission time</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

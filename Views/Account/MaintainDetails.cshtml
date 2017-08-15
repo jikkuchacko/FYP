@@ -1,9 +1,30 @@
-﻿@model Login
+﻿@model List<AssociateLecturer>
 @{
     Layout = ViewData["layout"] as string;
     string msg = ViewData["msg"] as string;
     Layout = "_Layout";
-
 }
 
-<p><h3><b>Maintain Deatils</b></h3></p>
+<p><h3><b>Maintain Details</b></h3></p>
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <tr>
+        <th class="col-sm-1">AL ID</th>
+        <th class="col-sm-1">AL Name</th>
+        <th class="col-sm-2">AL Email</th>
+        <th class="col-sm-2">AL contact Number</th>
+        <th class="col-sm-2">Actions</th>
+    </tr>
+    @foreach (AssociateLecturer b in Model)
+    {
+        <tr>
+            <td>@b.AlId</td>
+            <td>@b.AlName</td>
+            <td>@b.AlEmail</td>
+            <td>@b.AlContactNumber</td>
+            <td>
+                <a asp-action="EditBooking" asp-route-id="@b.AlId">Edit</a>
+                <a asp-action="EditBooking" asp-route-id="@b.AlId" asp-route-isDelete="true">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

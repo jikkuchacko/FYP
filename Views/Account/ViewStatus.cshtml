@@ -1,9 +1,163 @@
-﻿@model Login
+﻿@model List<dynamic>
 @{
     Layout = ViewData["layout"] as string;
-    string msg = ViewData["msg"] as string;
+    string msg = TempData["msg"] as string;
     Layout = "_Layout";
-
 }
 
+
 <p><h3><b>View Indication Status Of AL</b></h3></p>
+
+@{
+    if (msg != null)
+    {
+        <p>@msg</p>
+
+    }
+}
+<div class="container">
+    <div class="col-sm-8">
+        <div class="row">
+            <table id="allotTable" class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Timeslot</th>
+                        <th>Available Venue(s)</th>        
+                        <th>Lecturer Name</th>
+                        <th>Submission Time</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        <div class="row">
+            <form class="form-horizontal" asp-action="allot" method="post">
+                <div class="col-sm-3 col-sm-push-9">
+                    <input class="btn btn-primary form-control" type="submit" value="Allocate" />
+                </div>
+            </form>
+            <form class="form-horizontal" asp-action="reminder" method="post">
+                <div class="col-sm-3 col-sm-push-9">
+                    <input class="btn btn-primary form-control" type="submit" value="Send Reminder Email" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@{
+
+    var data = DBUtl.GetList(@"SELECT AL.al_name, AL.al_id, TS.timeslot_id, TS.examDate,LS.request_time,LS.preferred_timeslot_id
+            FROM lect_slot LS, associate_lecturer AL, Timeslot TS
+            WHERE AL.al_id = LS.associate_lecturer_al_id
+            and TS.timeslot_id = LS.Timeslot_timeslot_id
+            order by LS.Timeslot_timeslot_id ,LS.request_time;");
+
+    List<List<dynamic>> groupedSlot = new List<List<dynamic>>();
+    foreach (var slot in Model)
+    {
+        foreach (var optedSlot in data)
+        {
+            if (optedSlot.timeslot_id == slot.timeslot_id)
+            {
+                int pos = search(groupedSlot, slot.timeslot_id);
+                if (pos != -1)
+                {                
+                    groupedSlot[pos].Add(optedSlot);
+                }
+                else
+                {                   
+                    optedSlot.venues = getVenues(slot.timeslot_id);
+                    groupedSlot.Add(new List<dynamic>());
+                    groupedSlot.LastOrDefault().Add(optedSlot);
+                }
+            }
+        }
+    }
+
+    foreach (var group in groupedSlot)
+    {
+        <script>
+            var firstRow = document.createElement("tr");
+            var timeslot_id = document.createElement("td");
+            timeslot_id.setAttribute("rowspan", "@group.Count()");
+            timeslot_id.appendChild(document.createTextNode("@group.FirstOrDefault().examDate"));
+            firstRow.appendChild(timeslot_id);
+
+            var venues = document.createElement("td");
+            venues.setAttribute("rowspan", "@group.Count()");
+            venues.appendChild(document.createTextNode("@group.FirstOrDefault().venues"));
+            firstRow.appendChild(venues);
+
+            var col = document.createElement("td");
+            col.appendChild(document.createTextNode("@group.FirstOrDefault().al_name"));
+            firstRow.appendChild(col);
+
+            col1 = document.createElement("td");
+            col1.appendChild(document.createTextNode("@group.FirstOrDefault().request_time"));
+            firstRow.appendChild(col1);
+
+
+            $("#tableBody").append(firstRow);
+
+        </script>
+
+        @for (int i = 1; i < group.Count; i++)
+        {
+            dynamic slot = group[i];
+            <script>
+
+                var newRow = document.createElement("tr");
+                var col = document.createElement("td");
+                col.appendChild(document.createTextNode("@slot.al_name"));
+                newRow.append(col);
+
+                col1 = document.createElement("td");
+                col1.appendChild(document.createTextNode("@slot.request_time"));
+                newRow.append(col1);
+                $("#tableBody").append(newRow);
+            </script>
+        }
+
+    }
+}
+
+@functions {
+    int search(List<List<dynamic>> groupedSlot, dynamic searchSlot)
+    {
+        for (int i = 0; i < groupedSlot.Count; i++)
+        {
+            if (groupedSlot[i][0] != null && groupedSlot[i][0].timeslot_id == searchSlot)
+            {
+                return i;
+
+            }
+        }
+        return -1;
+    }
+    string getVenues(int timeSlot)
+    {
+        string concat = "";
+        string venueSql = @"SELECT t.timeslot_id, E.class_name
+                            FROM Timeslot t, exam_venue E WHERE
+                            E.Timeslot_timeslot_id = t.timeslot_id
+                            and E.associate_lecturer_al_id is null;";
+        var venues = DBUtl.GetList(venueSql);
+
+        foreach (var venue in venues)
+        {
+            if (venue.timeslot_id == timeSlot)
+            {
+                concat += venue.class_name + ",";
+
+            }
+        }
+        if (concat.Length > 0)
+        {
+            concat = concat.Substring(0, concat.Length - 1);
+
+        }
+        return concat;
+    }
+}

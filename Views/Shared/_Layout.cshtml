@@ -1,5 +1,5 @@
 ﻿@{
-    Login curUser = Context.Session.GetObject<Login>("Al_lecturer");
+    Login curUser = Context.Session.GetObject<Login>("associate_lecturer");
 }
 
 <!DOCTYPE html>
@@ -50,7 +50,7 @@
                 @if (curUser != null)
                 { 
                 <h4 class="text-center text-primary">
-                    Welcome @curUser.Name
+                    Welcome @curUser.al_name
                 </h4>
                 <h4 class="text-center text-primary">
                     <a asp-action="Logout">Logout</a>
@@ -72,9 +72,6 @@
                                 </li>
                                 <li class="active">
                                     <a asp-action="IndicateAvailability">Indicate Availability</a>
-                                </li>
-                                <li class="active">
-                                    <a asp-action="IndicationStatus">View Indication Status</a>
                                 </li>
                                 <li class="active">
                                     <a asp-action="ViewAllocation">View Allocation</a>

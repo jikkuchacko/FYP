@@ -1,9 +1,60 @@
-﻿@model Login
+﻿@model LectSlot
 @{
-    Layout = ViewData["layout"] as string;
-    string msg = ViewData["msg"] as string;
-    Layout = "_Layout";
+    var prefered_timeArray = new[]
+    {
+        new { value=1, text="9.00am"},
+        new { value=2, text="11.00am"},
+        new { value=3, text="1.00pm"},
+        new { value=4, text="3.00pm"},
+        new { value=5, text="5.00pm"}
+    };
 
 }
 
-<p><h3><b>Indicate Availability</b></h3></p>
+
+<form class="form-horizontal" asp-action="Submit">
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="date">Select date: </label>
+        <div class="col-sm-5">
+            <div class='input-group date' id='BsDateTimePicker'>
+                <input class="form-control" asp-for="date"
+                       placeholder="YYYY-MM-DD" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="date" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="prefered_time">Preferred time : </label>
+        <div class="col-sm-4">
+            @foreach (var item in prefered_timeArray)
+            {
+                <input type="radio" asp-for="prefered_time" value="@item.value" /> @item.text
+            }
+        </div>
+        <div class="has-error">
+            <span asp-validation-for="prefered_time" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <input type="submit" class="btn-btn-primary" value="Submit" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @ViewBag.Msg
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" asp-for="request_time">Submission time: </label>
+        <div class="col-sm-5 col-sm-6">
+            <div>@DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss tt")</div>
+        </div>
+    </div>
+</form>
+

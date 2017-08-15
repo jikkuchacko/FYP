@@ -1,9 +1,61 @@
-﻿@model Login
+﻿@model List<dynamic>
 @{
     Layout = ViewData["layout"] as string;
-    string msg = ViewData["msg"] as string;
+    string msg = TempData["msg"] as string;
     Layout = "_Layout";
-
 }
+<h2>Allocated Timeslot</h2>
+<table class="table table-bordered table-condensed table-hover table-striped">
+    <tr>
+        <th>Timeslot id</th>
+        <th>From School/Centre</th>
+        <th>Date of Exam</th>
+        <th>Starting Time</th>
+        <th>Exam Duration</th>
+        <th>Associate Lecturer ID</th>
+    </tr>
+    @if (Model != null)
+    {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.timeslot_id
+                </td>
+                <td>
+                    @item.module_schoolcentre
+                </td>
+                <td>
+                    @String.Format("{0: dd-MM-YYYY}", item.examDate)
+                </td>
+                <td>
+                    @String.Format("{0: HH:mm tt}", item.start_time)
+                </td>
+                <td>
+                    @item.duration_of_exam
+                </td>
+                <td>
+                    @item.al_id
+                </td>
+            </tr>
+        }
+    }
 
-<p><h3><b>View Allocation</b></h3></p>
+</table>
+<form class="form-horizontal" action="ViewAllocation">
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <input type="submit" class="btn-btn-primary" value="Accept allocation" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-6">
+            <input type="submit" class="btn-btn-primary" value="Reject allocation" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @ViewBag.Msg
+        </div>
+    </div>
+</form>
